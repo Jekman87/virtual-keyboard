@@ -1,5 +1,6 @@
 /* eslint-disable import/extensions */
 import Button from './Button.js';
+import buttonConfig from './buttonConfig.js';
 
 export default class Keyboard {
   constructor() {
@@ -21,7 +22,7 @@ export default class Keyboard {
     this.keyboard = document.createElement('div');
     this.keyboard.classList.add('keyboard');
 
-    const buttons = this.addButtonsToKeyboard(this.keyboard);
+    this.addButtonsToKeyboard(this.keyboard);
 
     const helpText = document.createElement('p');
     helpText.classList.add('help-text');
@@ -33,6 +34,24 @@ export default class Keyboard {
   }
 
   addButtonsToKeyboard(keyboard) {
+
+    for (let i = 0; i < buttonConfig.length; i += 1) {
+      const row = document.createElement('div');
+      row.classList.add('row');
+
+      for (let j = 0; j < buttonConfig[i].length; j += 1) {
+        const button = new Button(i, j);
+
+        row.append(button);
+      }
+
+
+
+    }
+
+
+
+
 
   }
 }

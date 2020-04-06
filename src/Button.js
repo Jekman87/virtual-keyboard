@@ -1,11 +1,10 @@
+/* eslint-disable import/extensions */
+import buttonConfig from './buttonConfig.js';
+
 export default class Button {
-  constructor(code) {
-    this.code = code;
+  constructor() {
+    this.button = null;
   }
 
-  createButton() {
-    this.button = document.createElement('div');
-    this.button.classList.add('button');
-  }
 
 }
