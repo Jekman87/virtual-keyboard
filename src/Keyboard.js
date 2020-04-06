@@ -40,7 +40,7 @@ export default class Keyboard {
       row.classList.add('row');
 
       for (let j = 0; j < buttonConfig[i].length; j += 1) {
-        const button = new Button(i, j);
+        const button = new Button(i, j).createButton();
 
         row.append(button);
       }
