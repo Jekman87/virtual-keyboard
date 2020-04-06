@@ -11,3 +11,43 @@ ul {
 a {
   text-decoration: none;
 }
+
+html {
+  font-size: 10px;
+}
+
+body {
+  font-weight: 400;
+  font-size: 1.2rem;
+  font-family: "Arial", sans-serif;
+  text-align: center;
+}
+
+.wrapper {
+  max-width: 800px;
+  margin: auto;
+}
+
+.title {
+  margin: 20px 0;
+}
+
+.textarea {
+  font-size: 1.4rem;
+  height: 200px;
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.keyboard {
+  margin-bottom: 20px;
+  width: 100%;
+  padding: 5px;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.help-text {
+  font-size: 1.6rem;
+}
