@@ -62,6 +62,18 @@ body {
   height: 40px;
   margin: 5px;
   outline: none;
+  border: none;
+  border-radius: 3px;
+  background: #ccc;
+}
+
+.button:hover {
+  background: #b4cfff;
+}
+
+.button.animated {
+  background: #7da2e3;
+  transform: scale(0.9);
 }
 
 .button.Backspace,
@@ -78,7 +90,7 @@ body {
 .ShiftRight, .ControlRight, .ArrowRight,
 .ArrowDown, .ArrowLeft, .ArrowUp,
 .AltRight {
-  background: #bbb;
+  background: #999;
 }
 
 .button.Tab,
