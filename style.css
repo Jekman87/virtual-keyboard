@@ -23,7 +23,7 @@ body {
   text-align: center;
 }
 
-.wrapper {
+#container {
   max-width: 800px;
   margin: auto;
 }
@@ -40,7 +40,7 @@ body {
   border-radius: 5px;
 }
 
-.keyboard {
+#keyboard {
   margin-bottom: 20px;
   width: 100%;
   padding: 5px;
@@ -50,6 +50,15 @@ body {
 
 .help-text {
   font-size: 1.6rem;
+}
+
+.help-text span {
+  display: none;
+}
+
+.En .help-text .En,
+.Ru .help-text .Ru {
+  display: block;
 }
 
 .row {
@@ -107,8 +116,8 @@ body {
   display: none;
 }
 
-.keyboard.En .button .En,
-.keyboard.Ru .button .Ru {
+.En .button .En,
+.Ru .button .Ru {
   display: block;
 }
 
@@ -116,15 +125,9 @@ body {
   display: none;
 }
 
-.button span span {
-  display: none;
-}
-
-.keyboard.lower .lower,
-.keyboard.shift .shift,
-.keyboard.caps .caps,
-.keyboard.capsShift .capsShift {
+#keyboard.lower .lower,
+#keyboard.shift .shift,
+#keyboard.caps .caps,
+#keyboard.capsShift .capsShift {
   display: block;
 }
-
-
