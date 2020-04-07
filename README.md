@@ -1,2 +1,5 @@
 # virtual-keyboard
-virtual-keyboard
+
+Task: https://github.com/rolling-scopes-school/tasks/blob/master/tasks/codejam-virtual-keyboard.md
+
+Deploy: https://jekman87.github.io/virtual-keyboard/
