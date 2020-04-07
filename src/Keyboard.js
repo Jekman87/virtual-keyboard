@@ -6,7 +6,8 @@ export default class Keyboard {
   constructor() {
     this.keyboard = null;
     this.textarea = null;
-    this.buttonSave = null;
+    this.lang = localStorage.getItem('lang') || 'En';
+    this.case = 'lower';
   }
 
   renderKeyboard() {
@@ -23,16 +24,14 @@ export default class Keyboard {
     this.keyboard = document.createElement('div');
     this.keyboard.id = 'keyboard';
     this.keyboard.classList.add('keyboard');
-
-    // по умолчанию английский - взять из localStorage
-    this.keyboard.classList.add('en');
-    this.keyboard.classList.add('lower');
+    this.keyboard.classList.add(this.lang);
+    this.keyboard.classList.add(this.case);
 
     this.addButtonsToKeyboard();
 
     const helpText = document.createElement('p');
     helpText.classList.add('help-text');
-    helpText.textContent = 'Клавиатура создана в ОС Windows. Для переключения языка используйте alt + shift. Хорошего дня! ;)';
+    helpText.textContent = 'Клавиатура создана в ОС Windows. Для переключения языка используйте Ctrl + Shift. Хорошего дня! ;)';
 
     wrapper.append(title, this.textarea, this.keyboard, helpText);
 
@@ -60,6 +59,9 @@ export default class Keyboard {
 
     this.keyboard.addEventListener('mousedown', this.mousedownHandler.bind(this));
     this.keyboard.addEventListener('mouseup', this.mouseupHandler.bind(this));
+
+    this.textarea.addEventListener('blur', this.textarea.focus);
+    this.textarea.focus();
   }
 
   keydownHandler(event) {
@@ -67,14 +69,11 @@ export default class Keyboard {
 
     const buttonCode = event.code;
     this.addAnimateToButton(buttonCode);
-
-    const buttonKey = event.key;
-    this.findButton(buttonKey);
+    this.handleClickedButton(buttonCode);
   }
 
   keyupHandler(event) {
     const buttonCode = event.code;
-
     this.removeAnimateFromButton(buttonCode);
   }
 
@@ -86,9 +85,9 @@ export default class Keyboard {
       button.addEventListener('mouseleave', this.mouseleaveHandler, {once: true});
 
       const buttonCode = button.classList[1];
-      console.log(buttonCode);
 
-      //this.findButton(buttonKey);
+      this.handleClickedButton(buttonCode);
+
     }
   }
 
@@ -121,10 +120,19 @@ export default class Keyboard {
     }
   }
 
-  findButton(buttonKey) {
-    switch (buttonKey) {
+  handleClickedButton(buttonCode) {
+    const buttonText = this.findButtonText(buttonCode);
+
+    if (buttonText === undefined) {
+      return;
+    }
+
+    console.log(buttonText);
+
+    switch (buttonText) {
       case 'Tab':
-        console.log('Tab');
+        //console.log('Tab');
+
         break;
 
       case 'CapsLock':
@@ -139,39 +147,54 @@ export default class Keyboard {
 
         break;
 
-      case 'Meta':
+      case 'Win':
 
         break;
 
       case 'Alt':
 
         break;
+
       case 'Backspace':
 
         break;
-      case 'Delete':
+      case 'Del':
 
         break;
       case 'Enter':
 
         break;
-      case 'ArrowLeft':
+      case '◄':
 
         break;
-      case 'ArrowDown':
+      case '▼':
 
         break;
-      case 'ArrowRight':
+      case '►':
 
         break;
-      case 'ArrowUp':
+      case '▲':
 
         break;
 
       default:
-        this.textarea.value += buttonKey;
+        this.textarea.value += buttonText;
 
         break;
+    }
+  }
+
+
+  findButtonText(buttonCode) {
+    for (let row = 0; row < buttonConfig.code.length; row += 1) {
+
+      const col = buttonConfig.code[row].indexOf(buttonCode);
+
+      if (col !== -1) {
+        const propOfConfig = `${this.case}${this.lang}`;
+
+        return buttonConfig[propOfConfig][row][col];
+      }
     }
   }
 

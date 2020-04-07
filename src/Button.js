@@ -24,7 +24,7 @@ export default class Button {
 
   createLangSet(lang) {
     const langSet = document.createElement('span');
-    langSet.classList.add(lang.toLowerCase());
+    langSet.classList.add(lang);
 
     const configProps = ['lower', 'shift', 'caps', 'capsShift'];
 

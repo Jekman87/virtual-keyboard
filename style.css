@@ -86,7 +86,7 @@ body {
 
 .Tab, .CapsLock, .ShiftLeft,
 .ControlLeft, .MetaLeft, .AltLeft,
-.Backspace, .Del, .Enter,
+.Backspace, .Delete, .Enter,
 .ShiftRight, .ControlRight, .ArrowRight,
 .ArrowDown, .ArrowLeft, .ArrowUp,
 .AltRight {
@@ -102,13 +102,13 @@ body {
   width: 370px;
 }
 
-.button .en,
-.button .ru {
+.button .En,
+.button .Ru {
   display: none;
 }
 
-.keyboard.en .button .en,
-.keyboard.ru .button .ru {
+.keyboard.En .button .En,
+.keyboard.Ru .button .Ru {
   display: block;
 }
 
