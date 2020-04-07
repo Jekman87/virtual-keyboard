@@ -20,9 +20,14 @@ export default class Keyboard {
     textarea.classList.add('textarea');
 
     this.keyboard = document.createElement('div');
+    this.keyboard.id = 'keyboard';
     this.keyboard.classList.add('keyboard');
 
-    this.addButtonsToKeyboard(this.keyboard);
+    // по умолчанию английский - взять из localStorage
+    this.keyboard.classList.add('en');
+    this.keyboard.classList.add('lower');
+
+    this.addButtonsToKeyboard();
 
     const helpText = document.createElement('p');
     helpText.classList.add('help-text');
@@ -33,27 +38,18 @@ export default class Keyboard {
     document.body.prepend(wrapper);
   }
 
-  addButtonsToKeyboard(keyboard) {
-
-    for (let i = 0; i < buttonConfig.length; i += 1) {
+  addButtonsToKeyboard() {
+    for (let i = 0; i < buttonConfig.lowerEn.length; i += 1) {
       const row = document.createElement('div');
       row.classList.add('row');
 
-      for (let j = 0; j < buttonConfig[i].length; j += 1) {
+      for (let j = 0; j < buttonConfig.lowerEn[i].length; j += 1) {
         const button = new Button(i, j).createButton();
 
         row.append(button);
       }
 
-
-
+      this.keyboard.append(row);
     }
-
-
-
-
-
   }
 }
-
-

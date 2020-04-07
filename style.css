@@ -51,3 +51,68 @@ body {
 .help-text {
   font-size: 1.6rem;
 }
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  min-width: 40px;
+  height: 40px;
+  margin: 5px;
+  outline: none;
+}
+
+.button.Backspace,
+.button.CapsLock,
+.button.ShiftLeft,
+.button.ShiftRight,
+.button.Enter {
+  width: 90px;
+}
+
+.Tab, .CapsLock, .ShiftLeft,
+.ControlLeft, .MetaLeft, .AltLeft,
+.Backspace, .Del, .Enter,
+.ShiftRight, .ControlRight, .ArrowRight,
+.ArrowDown, .ArrowLeft, .ArrowUp,
+.AltRight {
+  background: #bbb;
+}
+
+.button.Tab,
+.button.Del {
+  width: 60px;
+}
+
+.button.Space {
+  width: 370px;
+}
+
+.button .en,
+.button .ru {
+  display: none;
+}
+
+.keyboard.en .button .en,
+.keyboard.ru .button .ru {
+  display: block;
+}
+
+.button span span {
+  display: none;
+}
+
+.button span span {
+  display: none;
+}
+
+.keyboard.lower .lower,
+.keyboard.shift .shift,
+.keyboard.caps .caps,
+.keyboard.capsShift .capsShift {
+  display: block;
+}
+
+

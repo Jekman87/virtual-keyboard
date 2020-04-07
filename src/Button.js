@@ -14,21 +14,21 @@ export default class Button {
     this.button = document.createElement('button');
     this.button.classList.add('button', buttonCode);
 
-    const enSet = this._createLangSet('En');
-    const ruSet = this._createLangSet('Ru');
+    const enSet = this.createLangSet('En');
+    const ruSet = this.createLangSet('Ru');
 
     this.button.append(enSet, ruSet);
 
     return this.button;
   }
 
-  _createLangSet(lang) {
+  createLangSet(lang) {
     const langSet = document.createElement('span');
     langSet.classList.add(lang.toLowerCase());
 
     const configProps = ['lower', 'shift', 'caps', 'capsShift'];
 
-    for (let i = 0; i < props.length; i += 1) {
+    for (let i = 0; i < configProps.length; i += 1) {
       const langChar = document.createElement('span');
       langChar.classList.add(configProps[i]);
 
