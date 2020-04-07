@@ -1,5 +1,6 @@
 /* eslint-disable import/extensions */
 import buttonConfig from './buttonConfig.js';
+import { caseConfig } from './constants.js';
 
 export default class Button {
   constructor(row, col) {
@@ -26,13 +27,13 @@ export default class Button {
     const langSet = document.createElement('span');
     langSet.classList.add(lang);
 
-    const configProps = ['lower', 'shift', 'caps', 'capsShift'];
+    const keys = Object.keys(caseConfig);
 
-    for (let i = 0; i < configProps.length; i += 1) {
+    for (let i = 0; i < keys.length; i += 1) {
       const langChar = document.createElement('span');
-      langChar.classList.add(configProps[i]);
+      langChar.classList.add(caseConfig[keys[i]]);
 
-      const propOfConfig = `${configProps[i]}${lang}`;
+      const propOfConfig = `${caseConfig[keys[i]]}${lang}`;
       langChar.textContent = buttonConfig[propOfConfig][this.row][this.col];
 
       langSet.append(langChar);

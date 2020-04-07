@@ -1,6 +1,7 @@
 /* eslint-disable import/extensions */
 import Button from './Button.js';
 import buttonConfig from './buttonConfig.js';
+import { caseConfig, specialBtn } from './constants.js';
 
 export default class Keyboard {
   constructor() {
@@ -8,7 +9,7 @@ export default class Keyboard {
     this.textarea = null;
     this.container = null;
     this.lang = localStorage.getItem('lang') || 'En';
-    this.case = 'lower';
+    this.case = caseConfig.lower;
     this.pressedCtrlAlt = new Set();
   }
 
@@ -69,6 +70,9 @@ export default class Keyboard {
 
     this.keyboard.addEventListener('mousedown', this.mousedownHandler.bind(this));
     this.keyboard.addEventListener('mouseup', this.mouseupHandler.bind(this));
+
+    this.textarea.addEventListener('blur', this.textarea.focus);
+    this.textarea.focus();
   }
 
   keydownHandler(event) {
@@ -124,9 +128,10 @@ export default class Keyboard {
   }
 
   removeAnimateFromButton(code) {
-    if (code === 'CapsLock' && this.case === 'caps') {
+    if (code === specialBtn.capsLock && this.case === caseConfig.caps) {
       return;
     }
+
     const button = this.keyboard.querySelector(`.${code}`);
 
     if (button) {
@@ -142,61 +147,61 @@ export default class Keyboard {
     }
 
     switch (buttonText) {
-      case 'Tab':
+      case specialBtn.tab:
         this.handleTab();
 
         break;
 
-      case 'CapsLock':
+      case specialBtn.capsLock:
         this.handleCapsLock();
 
         break;
 
-      case 'Shift':
+      case specialBtn.shift:
         this.handleShift();
 
         break;
 
-      case 'Ctrl':
+      case specialBtn.ctrl:
         this.handleCtrlAlt(buttonText);
 
         break;
 
-      case 'Win':
+      case specialBtn.win:
         this.handleWin();
 
         break;
 
-      case 'Alt':
+      case specialBtn.alt:
         this.handleCtrlAlt(buttonText);
 
         break;
 
-      case 'Backspace':
+      case specialBtn.backspace:
         this.handleBackspace();
 
         break;
-      case 'Del':
+      case specialBtn.del:
         this.handleDel();
 
         break;
-      case 'Enter':
+      case specialBtn.enter:
         this.handleEnter();
 
         break;
-      case '◄':
+      case specialBtn.arrowLeft:
         this.handleArrowLeft();
 
         break;
-      case '▼':
+      case specialBtn.arrowDown:
         this.handleArrowDown();
 
         break;
-      case '►':
+      case specialBtn.arrowRight:
         this.handleArrowRight();
 
         break;
-      case '▲':
+      case specialBtn.arrowUp:
         this.handleArrowUp();
 
         break;
@@ -235,33 +240,33 @@ export default class Keyboard {
   }
 
   handleCapsLock() {
-    if (this.case === 'lower') {
-      this.case = 'caps';
-      this.keyboard.className = 'caps';
+    if (this.case === caseConfig.lower) {
+      this.case = caseConfig.caps;
+      this.keyboard.className = caseConfig.caps;
     } else {
-      this.case = 'lower';
-      this.keyboard.className = 'lower';
+      this.case = caseConfig.lower;
+      this.keyboard.className = caseConfig.lower;
     }
   }
 
   handleShift() {
-    if (this.case === 'lower') {
-      this.case = 'shift';
-      this.keyboard.className = 'shift';
-    } else if (this.case === 'caps') {
-      this.case = 'capsShift';
-      this.keyboard.className = 'capsShift';
+    if (this.case === caseConfig.lower) {
+      this.case = caseConfig.shift;
+      this.keyboard.className = caseConfig.shift;
+    } else if (this.case === caseConfig.caps) {
+      this.case = caseConfig.capsShift;
+      this.keyboard.className = caseConfig.capsShift;
     }
   }
 
   shiftUpHandler(buttonCode) {
-    if (buttonCode === 'ShiftLeft' || buttonCode === 'ShiftRight') {
-      if (this.case === 'shift') {
-        this.case = 'lower';
-        this.keyboard.className = 'lower';
-      } else if (this.case === 'capsShift') {
-        this.case = 'caps';
-        this.keyboard.className = 'caps';
+    if (buttonCode === specialBtn.shiftLeft || buttonCode === specialBtn.shiftRight) {
+      if (this.case === caseConfig.shift) {
+        this.case = caseConfig.lower;
+        this.keyboard.className = caseConfig.lower;
+      } else if (this.case === caseConfig.capsShift) {
+        this.case = caseConfig.caps;
+        this.keyboard.className = caseConfig.caps;
       }
     }
   }
@@ -278,12 +283,12 @@ export default class Keyboard {
   changeLanguage() {
     if (this.lang === 'En') {
       this.lang = 'Ru';
-      localStorage.setItem('lang', 'Ru');
-      this.container.className = 'Ru';
+      localStorage.setItem('lang', this.lang);
+      this.container.className = this.lang;
     } else {
       this.lang = 'En';
-      localStorage.setItem('lang', 'En');
-      this.container.className = 'En';
+      localStorage.setItem('lang', this.lang);
+      this.container.className = this.lang;
     }
   }
 
@@ -344,13 +349,19 @@ export default class Keyboard {
     this.textarea.selectionEnd = position;
   }
 
-  handleText(buttonText) {
-    const { selectionStart, value } = this.textarea;
-    this.textarea.value = value.slice(0, selectionStart) + buttonText + value.slice(selectionStart);
+  handleText(text) {
+    const { selectionStart, selectionEnd, value } = this.textarea;
+
+    if (selectionStart === selectionEnd) {
+      this.textarea.value = value.slice(0, selectionStart) + text + value.slice(selectionStart);
+    } else {
+      this.textarea.value = value.slice(0, selectionStart) + text + value.slice(selectionEnd);
+    }
+
     this.changeCursorPosition(selectionStart + 1);
   }
 
   handleWin() {
-    window.addEventListener('blur', () => this.removeAnimateFromButton('MetaLeft'), { once: true });
+    window.addEventListener('blur', () => this.removeAnimateFromButton(specialBtn.metaLeft), { once: true });
   }
 }
