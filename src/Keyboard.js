@@ -36,11 +36,11 @@ export default class Keyboard {
 
     const helpSpanEn = document.createElement('span');
     helpSpanEn.classList.add('En');
-    helpSpanEn.textContent = 'The keyboard is created in Windows. To switch the language, use Ctrl + Shift. Have a nice day! ;)';
+    helpSpanEn.textContent = 'The keyboard is created in Windows. To switch the language, use Ctrl + Alt. Have a nice day! ;)';
 
     const helpSpanRu = document.createElement('span');
     helpSpanRu.classList.add('Ru');
-    helpSpanRu.textContent = 'Клавиатура создана в ОС Windows. Для переключения языка используйте Ctrl + Shift. Хорошего дня! ;)';
+    helpSpanRu.textContent = 'Клавиатура создана в ОС Windows. Для переключения языка используйте Ctrl + Alt. Хорошего дня! ;)';
 
     helpText.append(helpSpanEn, helpSpanRu);
 
