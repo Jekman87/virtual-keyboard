@@ -50,14 +50,14 @@ export default class Keyboard {
   }
 
   addButtonsToKeyboard() {
-    for (let i = 0; i < buttonConfig.lowerEn.length; i += 1) {
+    for (let buttonRow = 0; buttonRow < buttonConfig.lowerEn.length; buttonRow += 1) {
       const row = document.createElement('div');
       row.classList.add('row');
 
-      for (let j = 0; j < buttonConfig.lowerEn[i].length; j += 1) {
-        const button = new Button(i, j).createButton();
+      for (let buttonCol = 0; buttonCol < buttonConfig.lowerEn[buttonRow].length; buttonCol += 1) {
+        const button = new Button(buttonRow, buttonCol);
 
-        row.append(button);
+        row.append(button.createButton());
       }
 
       this.keyboard.append(row);
