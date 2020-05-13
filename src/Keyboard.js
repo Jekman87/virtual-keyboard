@@ -10,7 +10,11 @@ export default class Keyboard {
     this.container = null;
     this.lang = localStorage.getItem('lang') || 'En';
     this.case = caseConfig.lower;
-    this.pressedCtrlAlt = new Set();
+
+    this.keydownHandler = this.keydownHandler.bind(this);
+    this.keyupHandler = this.keyupHandler.bind(this);
+    this.mousedownHandler = this.mousedownHandler.bind(this);
+    this.mouseupHandler = this.mouseupHandler.bind(this);
   }
 
   renderKeyboard() {
@@ -36,11 +40,11 @@ export default class Keyboard {
 
     const helpSpanEn = document.createElement('span');
     helpSpanEn.classList.add('En');
-    helpSpanEn.textContent = 'The keyboard is created in Windows. To switch the language, use Ctrl + Alt. Have a nice day! ;)';
+    helpSpanEn.textContent = 'The keyboard is created in Windows. To switch the language, use button Ru. Have a nice day! ;)';
 
     const helpSpanRu = document.createElement('span');
     helpSpanRu.classList.add('Ru');
-    helpSpanRu.textContent = 'Клавиатура создана в ОС Windows. Для переключения языка используйте Ctrl + Alt. Хорошего дня! ;)';
+    helpSpanRu.textContent = 'Клавиатура создана в ОС Windows. Для переключения языка используйте клавишу En. Хорошего дня! ;)';
 
     helpText.append(helpSpanEn, helpSpanRu);
 
@@ -65,14 +69,24 @@ export default class Keyboard {
   }
 
   addListeners() {
-    document.addEventListener('keydown', this.keydownHandler.bind(this));
-    document.addEventListener('keyup', this.keyupHandler.bind(this));
+    document.addEventListener('keydown', this.keydownHandler);
+    document.addEventListener('keyup', this.keyupHandler);
 
-    this.keyboard.addEventListener('mousedown', this.mousedownHandler.bind(this));
-    this.keyboard.addEventListener('mouseup', this.mouseupHandler.bind(this));
+    this.keyboard.addEventListener('mousedown', this.mousedownHandler);
+    this.keyboard.addEventListener('mouseup', this.mouseupHandler);
 
     this.textarea.addEventListener('blur', this.textarea.focus);
     this.textarea.focus();
+  }
+
+  removeListeners() {
+    document.removeEventListener('keydown', this.keydownHandler);
+    document.removeEventListener('keyup', this.keyupHandler);
+
+    this.keyboard.removeEventListener('mousedown', this.mousedownHandler);
+    this.keyboard.removeEventListener('mouseup', this.mouseupHandler);
+
+    this.textarea.removeEventListener('blur', this.textarea.focus);
   }
 
   keydownHandler(event) {
@@ -86,8 +100,6 @@ export default class Keyboard {
   keyupHandler(event) {
     const buttonCode = event.code;
 
-    this.shiftUpHandler(buttonCode);
-    this.pressedCtrlAlt.clear();
     this.removeAnimateFromButton(buttonCode);
   }
 
@@ -114,7 +126,6 @@ export default class Keyboard {
 
     if (button) {
       const buttonCode = button.classList[1];
-      this.shiftUpHandler(buttonCode);
       this.removeAnimateFromButton(buttonCode);
     }
   }
@@ -128,8 +139,16 @@ export default class Keyboard {
   }
 
   removeAnimateFromButton(code) {
-    if (code === specialBtn.capsLock && this.case === caseConfig.caps) {
-      return;
+    if (this.case === caseConfig.caps || this.case === caseConfig.capsShift) {
+      if (code === specialBtn.capsLock) {
+        return;
+      }
+    }
+
+    if (this.case === caseConfig.shift || this.case === caseConfig.capsShift) {
+      if (code === specialBtn.shiftLeft || code === specialBtn.shiftRight) {
+        return;
+      }
     }
 
     const button = this.keyboard.querySelector(`.${code}`);
@@ -163,17 +182,20 @@ export default class Keyboard {
         break;
 
       case specialBtn.ctrl:
-        this.handleCtrlAlt(buttonText);
 
         break;
 
-      case specialBtn.win:
+      case specialBtn.winRu:
+        this.handleWin();
+
+        break;
+
+      case specialBtn.winEn:
         this.handleWin();
 
         break;
 
       case specialBtn.alt:
-        this.handleCtrlAlt(buttonText);
 
         break;
 
@@ -243,6 +265,12 @@ export default class Keyboard {
     if (this.case === caseConfig.lower) {
       this.case = caseConfig.caps;
       this.keyboard.className = caseConfig.caps;
+    } else if (this.case === caseConfig.shift) {
+      this.case = caseConfig.capsShift;
+      this.keyboard.className = caseConfig.capsShift;
+    } else if (this.case === caseConfig.capsShift) {
+      this.case = caseConfig.shift;
+      this.keyboard.className = caseConfig.shift;
     } else {
       this.case = caseConfig.lower;
       this.keyboard.className = caseConfig.lower;
@@ -256,27 +284,12 @@ export default class Keyboard {
     } else if (this.case === caseConfig.caps) {
       this.case = caseConfig.capsShift;
       this.keyboard.className = caseConfig.capsShift;
-    }
-  }
-
-  shiftUpHandler(buttonCode) {
-    if (buttonCode === specialBtn.shiftLeft || buttonCode === specialBtn.shiftRight) {
-      if (this.case === caseConfig.shift) {
-        this.case = caseConfig.lower;
-        this.keyboard.className = caseConfig.lower;
-      } else if (this.case === caseConfig.capsShift) {
-        this.case = caseConfig.caps;
-        this.keyboard.className = caseConfig.caps;
-      }
-    }
-  }
-
-  handleCtrlAlt(buttonText) {
-    this.pressedCtrlAlt.add(buttonText);
-
-    if (this.pressedCtrlAlt.size === 2) {
-      this.changeLanguage();
-      this.pressedCtrlAlt.clear();
+    } else if (this.case === caseConfig.capsShift) {
+      this.case = caseConfig.caps;
+      this.keyboard.className = caseConfig.caps;
+    } else {
+      this.case = caseConfig.lower;
+      this.keyboard.className = caseConfig.lower;
     }
   }
 
@@ -363,5 +376,6 @@ export default class Keyboard {
 
   handleWin() {
     window.addEventListener('blur', () => this.removeAnimateFromButton(specialBtn.metaLeft), { once: true });
+    this.changeLanguage();
   }
 }
